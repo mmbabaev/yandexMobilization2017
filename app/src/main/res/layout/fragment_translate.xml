@@ -18,31 +18,32 @@
             android:layout_marginTop="8dp"
             android:orientation="horizontal">
 
-
-            <Spinner
-                android:id="@+id/target_spinner"
-                android:layout_height="40dp"
-                android:layout_width="match_parent"
-                android:layout_toLeftOf="@id/swap_button"
-                />
-
             <Button
                 android:id="@+id/swap_button"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_centerHorizontal="true"
                 android:background="@color/colorPrimary"
-                android:textSize="20dp"
-                android:text="<->"/>
+                android:textSize="20sp"
+                android:text="g"/>
+
             <Spinner
                 android:id="@+id/source_spinner"
+                android:layout_height="40dp"
+                android:layout_width="match_parent"
+                android:layout_toLeftOf="@id/swap_button"
+                />
+
+
+            <Spinner
+                android:id="@+id/target_spinner"
                 android:layout_height="40dp"
                 android:layout_width="match_parent"
                 android:layout_toRightOf="@id/swap_button" />
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/source_text_view"
+        <EditText
+            android:id="@+id/source_edit_text"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="8dp"

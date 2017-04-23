@@ -51,7 +51,7 @@ public class Translation extends SugarRecord {
     }
 
     public static Translation fromJSON(JSONObject json, String source) throws JSONException {
-        String text = json.getJSONArray("text").getJSONObject(0).toString();
+        String text = json.getJSONArray("text").getString(0);
         String lang = json.getString("lang");
 
         Translation translation = objectFromDatabase(source, text, lang);
@@ -82,13 +82,13 @@ public class Translation extends SugarRecord {
     }
 
     @Nullable
-    private static Translation objectFromDatabase(String source, String text, String lang) {
-        List<Translation> result = Translation.find(Translation.class,
-                "source = ?, text = ?, lang = ?",
-                source, text, lang);
+    private static Translation objectFromDatabase(String source, String result, String lang) {
+        List<Translation> translations = Translation.find(Translation.class,
+                "source = ? and result = ? and lang = ?",
+                source, result, lang);
 
-        if (result.size() > 0) {
-            return result.get(0);
+        if (translations.size() > 0) {
+            return translations.get(0);
         }
         return null;
     }

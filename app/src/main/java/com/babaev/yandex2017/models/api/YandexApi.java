@@ -13,6 +13,7 @@ import com.babaev.yandex2017.models.entities.Translation;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -59,15 +60,20 @@ public class YandexApi {
     }
 
     private String makeUrl(String method, Map<String, String> params) {
-        String result = baseUrl + method + "?key=" + key + "&";
-        for (String key : params.keySet()) {
-            result += key;
-            result += "=";
-            result += params.get(key);
-            result += "&";
-        }
+        try {
+            String result = baseUrl + method  + "?key=" + key + "&";
+            for (String paramKey : params.keySet()) {
+                result += paramKey;
+                result += "=";
+                result += URLEncoder.encode(params.get(paramKey), "UTF-8");
+                result += "&";
+            }
 
-        return result.substring(0, result.length() - 1);
+            return result.substring(0, result.length() - 1);
+
+        } catch (Exception ex) {
+            return "";
+        }
     }
 
     public static YandexApi getInstance() {
