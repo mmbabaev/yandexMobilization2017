@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">YM Translator</string>
+    <string name="translate">Перевод</string>
+    <string name="history">История</string>
+    <string name="favorites">Избранное</string>
+
+    <string name="find_in_history">Найти в истории</string>
+    <string name="find_in_favorites">Найти в избранном</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
