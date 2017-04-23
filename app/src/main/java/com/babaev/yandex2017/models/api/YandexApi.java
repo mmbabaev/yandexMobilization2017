@@ -1,4 +1,4 @@
-package com.babaev.yandex2017.models;
+package com.babaev.yandex2017.models.api;
 
 
 import android.content.Context;
@@ -8,6 +8,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.babaev.yandex2017.models.entities.Translation;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,14 +16,13 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class YTranslateApi {
-    public static YTranslateApi INSTANCE = new YTranslateApi();
+public class YandexApi {
+    private static YandexApi instance = new YandexApi();
 
     private String baseUrl = "https://translate.yandex.net/api/v1.5/tr.json/";
     private String key = "trnsl.1.1.20170422T153930Z.0a1133b3c8394203.c920ec559b09de381a1531aab73440fecf77a2b1";
-    private Context context;
 
-    public void translate(final String sourceText, String lang, final TranslateListener listener) {
+    public void translate(Context context, final String sourceText, String lang, final TranslateListener listener) {
         Map<String, String> params = new HashMap<>();
         params.put("lang", lang);
         params.put("text", sourceText);
@@ -38,11 +38,11 @@ public class YTranslateApi {
                                 Translation translation = Translation.fromJSON(response, sourceText);
                                 listener.onResponse(translation);
                             } else {
-                                listener.onError("");
+                                listener.onError("Неизвестная ошибка");
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            listener.onError("");
+                            listener.onError("Неизвестная ошибка");
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -50,20 +50,15 @@ public class YTranslateApi {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
-                        listener.onError("");
+                        listener.onError("Нет соединения с интернетом");
                     }
                 });
+
 
         Volley.newRequestQueue(context).add(jsonRequest);
     }
 
-
-
-    public void setContext(Context context) {
-        this.context = context;
-    }
-
-    public String makeUrl(String method, Map<String, String> params) {
+    private String makeUrl(String method, Map<String, String> params) {
         String result = baseUrl + method + "?key=" + key + "&";
         for (String key : params.keySet()) {
             result += key;
@@ -73,5 +68,9 @@ public class YTranslateApi {
         }
 
         return result.substring(0, result.length() - 1);
+    }
+
+    public static YandexApi getInstance() {
+        return instance;
     }
 }
