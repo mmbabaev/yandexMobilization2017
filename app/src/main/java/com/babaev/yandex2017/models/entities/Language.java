@@ -4,6 +4,9 @@ import com.orm.SugarRecord;
 
 import java.util.List;
 
+/**
+ * Entity class for source and target languages for translate
+ */
 public class Language extends SugarRecord {
     public String code;
     public String title;
@@ -16,7 +19,6 @@ public class Language extends SugarRecord {
     }
 
     public static List<Language> getList() {
-        Language.deleteAll(Language.class);
 
         // TODO: load dynamicaly?
         List<Language> result = Language.listAll(Language.class);
@@ -33,11 +35,9 @@ public class Language extends SugarRecord {
             result.add(de);
             result.add(fr);
 
-            ru.save();
-            en.save();
-            ja.save();
-            de.save();
-            fr.save();
+            for (Language lang : result) {
+                lang.save();
+            }
         }
 
         return result;

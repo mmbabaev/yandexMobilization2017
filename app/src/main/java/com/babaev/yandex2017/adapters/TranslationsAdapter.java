@@ -4,7 +4,6 @@ package com.babaev.yandex2017.adapters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +19,9 @@ import com.babaev.yandex2017.models.entities.Translation;
 
 import java.util.List;
 
+/**
+ * Abstract {@link ArrayAdapter} subclass for {@link android.widget.ListView} with {@link Translation} instances
+ */
 abstract public class TranslationsAdapter extends ArrayAdapter<Translation> implements Filterable {
     private static class TranslationViewHolder {
         CheckBox favorite;
@@ -90,6 +92,11 @@ abstract public class TranslationsAdapter extends ArrayAdapter<Translation> impl
         return translations.size();
     }
 
+    /**
+     * List of filtered translations
+     * @param constraint this string contains in result List
+     * @return list of {@link Translation} objects
+     */
     abstract protected List<Translation> getFilteredTranslations(String constraint);
 
     @NonNull

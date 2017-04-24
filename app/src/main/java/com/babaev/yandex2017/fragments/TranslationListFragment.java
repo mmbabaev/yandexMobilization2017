@@ -15,12 +15,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.babaev.yandex2017.R;
 import com.babaev.yandex2017.adapters.TranslationsAdapter;
 
+/**
+ * An abstract {@link Fragment} subclass, it contains search field, list view of tranlations and delete button
+ */
 public abstract class TranslationListFragment extends Fragment {
 
     protected ListView listView;

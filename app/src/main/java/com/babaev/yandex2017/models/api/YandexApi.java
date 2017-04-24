@@ -17,6 +17,9 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Helper class for working with Yandex Translator API
+ */
 public class YandexApi {
     private static YandexApi instance = new YandexApi();
 

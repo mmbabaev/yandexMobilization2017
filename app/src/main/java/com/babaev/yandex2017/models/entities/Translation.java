@@ -11,6 +11,9 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+/**
+ * Entity class to storage translation results
+ */
 public class Translation extends SugarRecord {
 
     private String source;

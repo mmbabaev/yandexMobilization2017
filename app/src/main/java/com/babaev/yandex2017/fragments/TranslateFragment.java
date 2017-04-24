@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A {@link Fragment} subclass for main translate logic
+ * An {@link Fragment} subclass for main translate logic
  */
 public class TranslateFragment extends Fragment {
     Button swapButton;
@@ -163,15 +163,12 @@ public class TranslateFragment extends Fragment {
     }
 
     public void translate() {
-        String s = sourceEditText.getText().toString();
         if (sourceLanguage == null || targetLanguage == null ||
                 sourceEditText.getText().toString().equals("")) {
-            String as = "";
             return;
         }
 
         String sourceText = sourceEditText.getText().toString();
-
         String lang = sourceLanguage.code + "-" + targetLanguage.code;
 
         YandexApi.getInstance().translate(sourceText, lang, new TranslateListener() {
@@ -187,6 +184,10 @@ public class TranslateFragment extends Fragment {
         });
     }
 
+    /**
+     * Setup current fragment with translation result
+     * @param translation response translation
+     */
     private void setupWithTranslation(final Translation translation) {
         this.current = translation;
 

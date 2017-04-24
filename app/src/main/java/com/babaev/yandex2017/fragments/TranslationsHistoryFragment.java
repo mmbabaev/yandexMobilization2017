@@ -8,6 +8,9 @@ import com.babaev.yandex2017.models.entities.Translation;
 
 import java.util.List;
 
+/**
+ * Realization of {@link TranslationListFragment}. Fragment for history list
+ */
 public class TranslationsHistoryFragment extends TranslationListFragment {
     @Override
     protected TranslationsAdapter getAdapter() {

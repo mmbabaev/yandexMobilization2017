@@ -8,6 +8,9 @@ import com.babaev.yandex2017.models.entities.Translation;
 
 import java.util.List;
 
+/**
+ * Realization of {@link TranslationListFragment}. Fragment for favorite list
+ */
 public class TranslationsFavoriteFragment extends TranslationListFragment {
     @Override
     protected TranslationsAdapter getAdapter() {

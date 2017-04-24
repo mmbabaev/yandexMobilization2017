@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // First fragment
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_layout, translateFragment);
         transaction.commit();
