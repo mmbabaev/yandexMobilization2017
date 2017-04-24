@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -50,8 +51,6 @@ public class TranslateFragment extends Fragment {
 
     Translation current;
 
-    boolean shouldTranslate;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -79,7 +78,7 @@ public class TranslateFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 sourceLanguage = languages.get(position);
-                translate();
+                resultTextView.setText("");
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
@@ -132,16 +131,16 @@ public class TranslateFragment extends Fragment {
         swapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                shouldTranslate = false;
-
                 sourceEditText.setText(resultTextView.getText());
                 sourceEditText.setSelection(sourceEditText.getText().length());
 
                 int temp = sourceSpinner.getSelectedItemPosition();
                 sourceSpinner.setSelection(targetSpinner.getSelectedItemPosition());
 
-                shouldTranslate = true;
+                AdapterView.OnItemSelectedListener listener = targetSpinner.getOnItemSelectedListener();
+                targetSpinner.setOnItemSelectedListener(null);
                 targetSpinner.setSelection(temp);
+                targetSpinner.setOnItemSelectedListener(listener);
             }
         });
 
@@ -155,8 +154,6 @@ public class TranslateFragment extends Fragment {
                 hideKeyBoard();
             }
         });
-
-        shouldTranslate = true;
         return view;
     }
 
@@ -166,7 +163,10 @@ public class TranslateFragment extends Fragment {
     }
 
     public void translate() {
-        if (!shouldTranslate || sourceLanguage == null || targetLanguage == null || sourceEditText.getText().length() == 0) {
+        String s = sourceEditText.getText().toString();
+        if (sourceLanguage == null || targetLanguage == null ||
+                sourceEditText.getText().toString().equals("")) {
+            String as = "";
             return;
         }
 

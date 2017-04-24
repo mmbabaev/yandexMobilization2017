@@ -16,6 +16,8 @@ public class Language extends SugarRecord {
     }
 
     public static List<Language> getList() {
+        Language.deleteAll(Language.class);
+
         // TODO: load dynamicaly?
         List<Language> result = Language.listAll(Language.class);
         if (result.size() == 0) {
