@@ -1,0 +1,44 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.TranslationListFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/search_edit_text"
+            style="@style/Widget.AppCompat.EditText"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+
+            android:layout_toLeftOf="@+id/delete_button"
+            android:maxLines="1"
+            android:ems="10"
+            android:imeOptions="actionGo"
+            android:hint="@string/search" />
+
+        <Button
+            android:id="@+id/delete_button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_above="@+id/translations_list_view"
+            android:layout_alignParentRight="true"
+
+            android:background="@drawable/ic_delete" />
+
+        <ListView
+            android:id="@+id/translations_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_below="@+id/search_edit_text"
+            android:layout_alignParentBottom="true">
+
+        </ListView>
+
+
+    </RelativeLayout>
+</FrameLayout>

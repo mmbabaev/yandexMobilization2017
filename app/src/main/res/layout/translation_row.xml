@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="60dp">
+
+    <CheckBox
+        android:id="@+id/row_favorite_check_box"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerVertical="true"
+        android:button="@drawable/favorite_check_box"
+        />
+
+    <TextView
+        android:id="@+id/row_source_text"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_toRightOf="@id/row_favorite_check_box"
+        android:layout_toLeftOf="@+id/row_lang_text"
+
+
+        android:ellipsize="end"
+        android:maxLines="1"
+
+        android:textColor="@android:color/black"
+
+        android:textSize="20sp" >
+    </TextView>
+
+    <TextView
+        android:id="@+id/row_result_text"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+
+        android:layout_below="@+id/row_source_text"
+        android:layout_toRightOf="@+id/row_favorite_check_box"
+        android:layout_toLeftOf="@+id/row_lang_text"
+
+        android:textColor="@color/subTitle"
+        android:textSize="20sp" >
+    </TextView>
+
+    <TextView
+        android:id="@+id/row_lang_text"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+
+        android:textAlignment="center"
+        android:textColor="@android:color/darker_gray"
+        android:text="EN-RU"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+</RelativeLayout>

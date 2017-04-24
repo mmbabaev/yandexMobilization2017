@@ -3,6 +3,8 @@ package com.babaev.yandex2017.models.entities;
 import android.support.annotation.Nullable;
 
 import com.orm.SugarRecord;
+import com.orm.query.Condition;
+import com.orm.query.Select;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,6 +16,7 @@ public class Translation extends SugarRecord {
     private String source;
     private String result;
     private String lang;
+
 
     private boolean favorite;
     private long time;
@@ -66,19 +69,33 @@ public class Translation extends SugarRecord {
     }
 
     public static List<Translation> getFavoriteList() {
-        return Translation.find(Translation.class, "favorite = true");
+        String query = "SELECT * FROM Translation WHERE favorite = 1 ORDER BY time DESC";
+        return Translation.findWithQuery(Translation.class, query);
+    }
+
+    public static List<Translation> getFavoriteList(String constraint) {
+        String query = "SELECT * FROM Translation WHERE (favorite = 1) and (source LIKE '%" + constraint +
+                "%' or result LIKE '%" + constraint +
+                "%') ORDER BY time DESC";
+        return Translation.findWithQuery(Translation.class, query);
     }
 
     public static List<Translation> getHistoryList() {
         return Translation.findWithQuery(Translation.class, "SELECT * FROM Translation ORDER BY time DESC");
     }
 
+    public static List<Translation> getHistoryList(String constraint) {
+        String query = "SELECT * FROM Translation WHERE source LIKE '%" + constraint +
+                "%' or result LIKE '%" + constraint + "%' ORDER BY time DESC";
+        return Translation.findWithQuery(Translation.class, query);
+    }
+
     public static void clearHistory() {
-        Translation.deleteAll(Translation.class, "favorite = false");
+        Translation.deleteAll(Translation.class, "favorite = 0");
     }
 
     public static void clearFavorite() {
-        Translation.deleteAll(Translation.class, "favorite = true");
+        Translation.deleteAll(Translation.class, "favorite = 1");
     }
 
     @Nullable

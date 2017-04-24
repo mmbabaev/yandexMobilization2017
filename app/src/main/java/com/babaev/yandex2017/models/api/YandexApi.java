@@ -22,8 +22,9 @@ public class YandexApi {
 
     private String baseUrl = "https://translate.yandex.net/api/v1.5/tr.json/";
     private String key = "trnsl.1.1.20170422T153930Z.0a1133b3c8394203.c920ec559b09de381a1531aab73440fecf77a2b1";
+    private Context context;
 
-    public void translate(Context context, final String sourceText, String lang, final TranslateListener listener) {
+    public void translate(final String sourceText, String lang, final TranslateListener listener) {
         Map<String, String> params = new HashMap<>();
         params.put("lang", lang);
         params.put("text", sourceText);
@@ -33,7 +34,6 @@ public class YandexApi {
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        // the response is already constructed as a JSONObject!
                         try {
                             if (response.getInt("code") == 200) {
                                 Translation translation = Translation.fromJSON(response, sourceText);
@@ -74,6 +74,10 @@ public class YandexApi {
         } catch (Exception ex) {
             return "";
         }
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
     }
 
     public static YandexApi getInstance() {

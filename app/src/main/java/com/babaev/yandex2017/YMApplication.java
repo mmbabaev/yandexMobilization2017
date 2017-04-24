@@ -1,9 +1,8 @@
 package com.babaev.yandex2017;
 
-
 import android.app.Application;
 
-import com.babaev.yandex2017.models.entities.Language;
+import com.babaev.yandex2017.models.api.YandexApi;
 import com.orm.SugarContext;
 
 public class YMApplication extends Application {
@@ -12,7 +11,8 @@ public class YMApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+        // setup contex for singleton classes
         SugarContext.init(getApplicationContext());
-        Language.findById(Language.class, (long)1);
+        YandexApi.getInstance().setContext(getApplicationContext());
     }
 }

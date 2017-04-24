@@ -23,9 +23,8 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_centerHorizontal="true"
-                android:background="@color/colorPrimary"
-                android:textSize="20sp"
-                android:text="g"/>
+                android:background="@drawable/ic_action_name"
+                android:textSize="20sp" />
 
             <Spinner
                 android:id="@+id/source_spinner"
@@ -42,23 +41,40 @@
                 android:layout_toRightOf="@id/swap_button" />
         </RelativeLayout>
 
-        <EditText
-            android:id="@+id/source_edit_text"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="8dp"
-
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/source_edit_text"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="8dp"
 
-            android:background="@drawable/text_view_back"
-            />
+                android:padding="10dp"
+                android:gravity="top"
+
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+
+                android:background="@drawable/text_view_back"
+                />
+            <CheckBox
+                android:id="@+id/translate_favorite_check_box"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/favorite_check_box"
+                android:text=""
+                android:layout_alignTop="@+id/source_edit_text"
+                android:layout_alignRight="@+id/source_edit_text"
+                android:layout_alignEnd="@+id/source_edit_text" />
+        </RelativeLayout>
 
         <Button
             android:id="@+id/translate_button"
             android:layout_gravity="center_horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
             android:text="@string/translate_button" />
 
         <TextView

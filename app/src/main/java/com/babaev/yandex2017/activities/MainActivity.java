@@ -1,4 +1,4 @@
-package com.babaev.yandex2017;
+package com.babaev.yandex2017.activities;
 
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -10,6 +10,8 @@ import android.view.MenuItem;
 
 import com.babaev.yandex2017.R;
 import com.babaev.yandex2017.fragments.TranslateFragment;
+import com.babaev.yandex2017.fragments.TranslationsFavoriteFragment;
+import com.babaev.yandex2017.fragments.TranslationsHistoryFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,7 +21,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         final TranslateFragment translateFragment = new TranslateFragment();
-
+        final TranslationsHistoryFragment historyFragment = new TranslationsHistoryFragment();
+        final TranslationsFavoriteFragment favoriteFragment = new TranslationsFavoriteFragment();
 
         BottomNavigationView navigationView = (BottomNavigationView)findViewById(R.id.bottom_navigation);
         navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -31,10 +34,10 @@ public class MainActivity extends AppCompatActivity {
                         selectedFragment = translateFragment;
                         break;
                     case R.id.history_item:
-                        selectedFragment = translateFragment;
+                        selectedFragment = historyFragment;
                         break;
                     case R.id.favorites_item:
-                        selectedFragment = translateFragment;
+                        selectedFragment = favoriteFragment;
                         break;
                 }
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -48,4 +51,6 @@ public class MainActivity extends AppCompatActivity {
         transaction.replace(R.id.frame_layout, translateFragment);
         transaction.commit();
     }
+
+
 }

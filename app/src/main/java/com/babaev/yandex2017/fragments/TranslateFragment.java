@@ -1,17 +1,26 @@
 package com.babaev.yandex2017.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.babaev.yandex2017.R;
 import com.babaev.yandex2017.models.api.TranslateListener;
@@ -29,13 +38,19 @@ public class TranslateFragment extends Fragment {
     Button swapButton;
     Spinner sourceSpinner;
     Spinner targetSpinner;
-    TextView sourceEditText;
+    EditText sourceEditText;
     TextView resultTextView;
     Button translateButton;
+
+    CheckBox favoriteCheckBox;
 
     List<Language> languages;
     Language sourceLanguage;
     Language targetLanguage;
+
+    Translation current;
+
+    boolean shouldTranslate;
 
     @Nullable
     @Override
@@ -56,6 +71,9 @@ public class TranslateFragment extends Fragment {
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sourceSpinner.setAdapter(spinnerAdapter);
         targetSpinner.setAdapter(spinnerAdapter);
+
+        sourceSpinner.setSelection(0);
+        targetSpinner.setSelection(1);
 
         sourceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -81,39 +99,107 @@ public class TranslateFragment extends Fragment {
         resultTextView = (TextView)view.findViewById(R.id.result_text_view);
         translateButton = (Button)view.findViewById(R.id.translate_button);
 
-        sourceSpinner.setSelection(0);
-        targetSpinner.setSelection(1);
-
         translateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                translate();
+                if (sourceEditText.getText().length() == 0) {
+                    Toast toast = Toast.makeText(getContext(), "Введите текст для перевода", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.TOP, 0, 0);
+                    toast.show();
+                } else {
+                    translate();
+                }
+                hideKeyBoard();
             }
         });
 
+        favoriteCheckBox = (CheckBox)view.findViewById(R.id.translate_favorite_check_box);
+
+        sourceEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                favoriteCheckBox.setVisibility(View.INVISIBLE);
+                resultTextView.setText("");
+            }
+        });
+
+        swapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shouldTranslate = false;
+
+                sourceEditText.setText(resultTextView.getText());
+                sourceEditText.setSelection(sourceEditText.getText().length());
+
+                int temp = sourceSpinner.getSelectedItemPosition();
+                sourceSpinner.setSelection(targetSpinner.getSelectedItemPosition());
+
+                shouldTranslate = true;
+                targetSpinner.setSelection(temp);
+            }
+        });
+
+        if (current == null) {
+            favoriteCheckBox.setVisibility(View.INVISIBLE);
+        }
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideKeyBoard();
+            }
+        });
+
+        shouldTranslate = true;
         return view;
     }
 
+    private void hideKeyBoard() {
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+    }
+
     public void translate() {
-        if (sourceLanguage == null || targetLanguage == null) {
+        if (!shouldTranslate || sourceLanguage == null || targetLanguage == null || sourceEditText.getText().length() == 0) {
             return;
         }
 
         String sourceText = sourceEditText.getText().toString();
+
         String lang = sourceLanguage.code + "-" + targetLanguage.code;
 
-        YandexApi.getInstance().translate(this.getContext(), sourceText, lang, new TranslateListener() {
+        YandexApi.getInstance().translate(sourceText, lang, new TranslateListener() {
             @Override
-            public void onResponse(Translation translation) {
-                String result = translation.getResult();
-                resultTextView.setText(result);
-
-                //TODO: favorite logic
+            public void onResponse(final Translation translation) {
+                setupWithTranslation(translation);
             }
 
             @Override
             public void onError(String message) {
-                //TODO: show toast message
+                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void setupWithTranslation(final Translation translation) {
+        this.current = translation;
+
+        String result = translation.getResult();
+        resultTextView.setText(result);
+
+        favoriteCheckBox.setOnCheckedChangeListener(null);
+        favoriteCheckBox.setVisibility(View.VISIBLE);
+        favoriteCheckBox.setChecked(translation.isFavorite());
+        favoriteCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                translation.setFavorite(isChecked);
             }
         });
     }
